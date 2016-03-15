@@ -1,21 +1,25 @@
 import React from 'react';
+import TodoHeader from './TodoHeader';
+// import TodoTools from './TodoTools';
+import TodoList from './TodoList';
+import Footer from './Footer';
 
-export default ({ todos = [] }) => (
+const getActiveItems = todos => {
+  if (!todos || !todos.length) {
+    return 0;
+  }
+
+  const activeItems = todos.filter(item => item.get('status') === 'active');
+  return activeItems.size;
+};
+
+export default ({ todos=[], filter='all' }) => (
   <div>
     <section className="todoapp">
-      <section className="main">
-        <ul className="todo-list">
-          {todos.map(item => (
-            <li className="active" key={item.get('text')}>
-              <div className="view">
-                <input type="checkbox" className="toggle"/>
-                <label htmlFor="todo">{item.get('text')}</label>
-                <button className="destroy"/>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <TodoHeader/>
+      <TodoList todos={todos} filter={filter}/>
+      {/* <TodoTools filter={filter} nbActiveItens={getActiveItems(todos)}/> */}
     </section>
+    <Footer/>
   </div>
 );
